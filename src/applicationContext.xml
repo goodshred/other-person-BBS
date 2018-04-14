@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd" xmlns:tx="http://www.springframework.org/schema/tx">
+
+	<!-- 用户注册模板bean -->
+	<bean name="userDao" class="com.bbs.daoImpl.UserDaoImpl"></bean>
+	<bean name="userBiz" class="com.bbs.serviceImpl.UserBizImpl">
+		<property name="userDao" ref="userDao"></property>
+	</bean>
+	<bean name="registAction" class="com.bbs.action.RegistAction">
+		<property name="userBiz" ref="userBiz"></property>
+	</bean>
+	
+	<bean name="loginAction" class="com.bbs.action.LoginAction">
+		<property name="userBiz" ref="userBiz"></property>
+		<property name="blackListBiz" ref="blackListBiz"></property>
+	</bean>	
+	
+	<bean name="activeAction" class="com.bbs.action.ActiveAction">
+		
+	</bean>
+	
+	<bean name="userAction" class="com.bbs.action.UserAction">
+			<property name="userBiz" ref="userBiz"></property>
+	 </bean>
+	 
+	 <!-- 精华帖申请模块 -->
+	<bean name="bestPostDao" class="com.bbs.daoImpl.BestPostDaoImpl">
+	</bean>
+	<bean id="bestPostBiz" class="com.bbs.serviceImpl.BestPostBizImpl">
+		<property name="bestPostDao" ref="bestPostDao"></property>
+	</bean>
+	
+	<!-- 帖子查询模块 -->
+	
+	<bean name="postDao" class="com.bbs.daoImpl.PostDaoImpl">
+	</bean>
+	<bean id="postBiz" class="com.bbs.serviceImpl.PostBizImpl">
+		<property name="postDao" ref="postDao"></property>
+	</bean>
+	<bean id="postAction" class="com.bbs.action.PostAction">
+		<property name="postBiz" ref="postBiz"></property>
+		<property name="bestPostBiz" ref="bestPostBiz"></property>
+	</bean>
+	<bean id="moreAction" class="com.bbs.action.MoreAction">
+		<property name="postBiz" ref="postBiz"></property>
+		<property name="mainForumBiz" ref="mainForumBiz"></property>
+	</bean>
+	<bean id="publishAction" class="com.bbs.action.PublishPostAction">
+		<property name="postBiz" ref="postBiz"></property>
+		<property name="blackListBiz" ref="blackListBiz"></property>
+	</bean>
+	
+	
+	<!-- 帖子搜索 -->
+	<bean id="postSearchAction" class="com.bbs.action.SearchAction">
+		<property name="postBiz" ref="postBiz"></property>
+	</bean>
+	<!-- 回复模块属性注入 -->
+	<bean name="followcardDao" class="com.bbs.daoImpl.FollowcardDaoImpl">
+	</bean>
+	<bean id="followcardBiz" class="com.bbs.serviceImpl.FollowcardBizImpl">
+		<property name="followcardDao" ref="followcardDao"></property>
+	</bean>
+	<bean id="replyAction" class="com.bbs.action.ReplyAction">
+		<property name="followcardBiz" ref="followcardBiz"></property>
+		<property name="postBiz" ref="postBiz"></property>
+		<property name="blackListBiz" ref="blackListBiz"></property>
+	</bean>
+	
+	<bean name="mainForumDao" class="com.bbs.daoImpl.MainForumDaoImpl"></bean>
+	<bean id="mainForumBiz" class="com.bbs.serviceImpl.MainForumBizImpl">
+		<property name="mainDao" ref="mainForumDao"></property>
+	</bean>
+	
+	<!-- 封锁用户id模块 -->
+	<bean name="blackListDao" class="com.bbs.daoImpl.BlackListDaoImpl">
+	</bean>
+	<bean id="blackListBiz" class="com.bbs.serviceImpl.BlackListBizImpl">
+		<property name="blackListDao" ref="blackListDao"></property>
+	</bean>
+	<bean id="blAction" class="com.bbs.action.LimitUserAction">
+		<property name="blackListBiz" ref="blackListBiz"></property>
+		<property name="userBiz" ref="userBiz"></property>
+	</bean>
+	
+	<!-- 板块创建 -->
+	<bean name="subForumDao" class="com.bbs.daoImpl.SubForumDaoImpl">
+	</bean>
+	<bean id="subForumBiz" class="com.bbs.serviceImpl.SubForumBizImpl">
+		<property name="subDao" ref="subForumDao"></property>
+	</bean>
+	<bean id="createDiscussAction" class="com.bbs.action.CreateDiscussAction">
+		<property name="mainBiz" ref="mainForumBiz"></property>
+		<property name="subBiz" ref="subForumBiz"></property>
+	</bean>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 公告模块 -->
+	
+	<bean name="noticeDao" class="com.bbs.daoImpl.NoticeDaoImpl"></bean>
+	<bean id="noticeBiz" class="com.bbs.serviceImpl.NoticeBizImpl">
+		<property name="noticeDao" ref="noticeDao"></property>
+	</bean>
+	<bean id="noticeAction" class="com.bbs.action.NoticeAction">
+		<property name="noticeBiz" ref="noticeBiz"></property>
+	</bean>
+	
+	
+	
+	<!-- 管理员模块 -->
+	<bean name="adminDao" class="com.bbs.daoImpl.AdminDaoImpl"></bean>
+	<bean id="adminBiz" class="com.bbs.serviceImpl.AdminBizImpl">
+		<property name="adminDao" ref="adminDao"></property>
+	</bean>
+	<bean id="adminAction" class="com.bbs.action.AdminAction">
+		<property name="adminBiz" ref="adminBiz"></property>
+	</bean>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	</beans>

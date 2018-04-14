@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+
+ <!-- 请求参数的编码方式 -->
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+
+	<!-- 指定被struts2处理的请求后缀类型。多个用逗号隔开 -->
+	<constant name="struts.action.extension" value="action,do" />
+
+	<!-- 当struts.xml改动后，是否重新加载。默认值为false,开发阶段最好打开 -->
+	<constant name="struts.configuration.xml.reload" value="true" />
+
+	<!-- 是否使用struts的开发模式。开发模式会有更多的调试信息  -->
+	<constant name="struts.devMode" value="false" />
+
+	<!-- 设置浏览器是否缓存静态内容。默认值为true,开发阶段最好关闭 -->
+	<constant name="struts.serve.static.browserCache" value="false" />
+
+	<!-- 是否开启动态方法调用 - 允许使用! 匹配请求 -->
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+
+	<!-- 指定由spring负责action对象的创建 
+	<constant name="struts.objectFactory" value="spring" /> -->
+	
+<package name="user" namespace="/" extends="struts-default">
+	<interceptors>
+	<interceptor name="loginPermission" class="com.bbs.interceptor.UserInterceptor"></interceptor>
+		<interceptor-stack name="loginPermissionStack">
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="loginPermission"></interceptor-ref>
+		</interceptor-stack>
+	</interceptors>
+
+	<action name="regist" class="com.bbs.action.RegistAction">
+		<result name="regist">/regist.jsp</result>
+		<result name="skip">/skip.jsp</result>
+	</action>
+	
+	<action name="login" class="com.bbs.action.LoginAction">
+		<result name="success">/index.jsp</result>
+		<result name="login">/login.jsp</result>
+	</action>
+	
+	<action name="active" class="com.bbs.action.ActiveAction">
+		<result name="message">/pages/message.jsp</result>
+		<result name="skip_login">/skip_login.jsp</result>
+		<result name="index">/index.jsp</result>
+	</action>
+	
+	<action name="publish" class="com.bbs.action.PublishPostAction">
+		<result name="success">/pages/mypost.jsp</result>
+		<result name="publish">/publish_post.jsp</result>
+		<result name="login">/login.jsp</result>
+		<result name="error">/pages/error.jsp</result>
+		<interceptor-ref name="loginPermissionStack"></interceptor-ref>
+	</action>
+	
+	<action name="updatepost" class="com.bbs.action.PublishPostAction" method="commitEditor">
+		<result name="success">/pages/post.jsp</result>
+		<result name="login">/login.jsp</result>
+		<result name="error">/pages/error.jsp</result>
+		<interceptor-ref name="loginPermissionStack"></interceptor-ref>
+	</action>
+	
+	<action name="postDetail" class="com.bbs.action.PostAction">
+		<result name="success">/pages/post.jsp</result>
+		<result name="error">/pages/error.jsp</result>
+	</action>
+	
+	<action name="editpost" class="com.bbs.action.PostAction" method="editPost">
+		<result name="success">/publish_post.jsp</result>
+		<result name="error">/pages/error.jsp</result>
+	</action>
+	
+	
+	<action name="reply" class="com.bbs.action.ReplyAction">
+		<result name="success">/pages/post.jsp</result>
+		<result name="post">/pages/post.jsp</result>
+		<result name="error">/pages/error.jsp</result>
+		<result name="login">/login.jsp</result>
+		<!-- 回复要登陆 -->
+		<interceptor-ref name="loginPermissionStack"></interceptor-ref>
+	</action>
+	
+	
+	<action name="search" class="com.bbs.action.SearchAction">
+		<result name="success">/pages/item.jsp</result>
+		<result name="error">/pages/error.jsp</result>
+	</action>
+	
+	<action name="more" class="com.bbs.action.MoreAction">
+		<result name="success">/pages/more.jsp</result>
+		<result name="error">/pages/error.jsp</result>
+	</action>
+	
+	<action name="logout" class="com.bbs.action.LogoutAction">
+		<result name="success">/index.jsp</result>
+		<result name="error">/pages/error.jsp</result>
+	</action>
+	
+	<action name="userchange" class="com.bbs.action.UserAction">
+		<result name="success">/pages/change-info.jsp</result>
+		<result name="error">/pages/error.jsp</result>
+		<result name="input">/pages/error.jsp</result>
+	</action>
+	
+	<!-- 管理员模块 -->
+	<action name="adminlogin" class="com.bbs.action.AdminAction" method="login">
+		<result name="success">/manage/notice.jsp</result>
+		<result name="login">/manage/admin.jsp</result>
+		<result name="error">/pages/error.jsp</result>
+		<result name="input">/pages/error.jsp</result>
+	</action>
+	<action name="adminupdate" class="com.bbs.action.AdminAction" method="update">
+		<result name="success">/manage/change-admin.jsp</result>
+		<result name="login">/manage/admin.jsp</result>
+		<result name="error">/pages/error.jsp</result>
+		<result name="input">/pages/error.jsp</result>
+	</action>
+	<action name="postdelete" class="com.bbs.action.PostAction" method="delete">
+		<result name="success">/manage/newpost.jsp</result>
+		<result name="login">/manage/admin.jsp</result>
+		<result name="error">/pages/error.jsp</result>
+		<result name="input">/pages/error.jsp</result>
+	</action>
+	<action name="creatediscuss" class="com.bbs.action.CreateDiscussAction">
+		<result name="success">/manage/create_discuss.jsp</result>
+		<result name="create">/manage/create_discuss.jsp</result>
+		<result name="error">/pages/error.jsp</result>
+		<result name="input">/pages/error.jsp</result>
+	</action>
+	
+	<!-- 公告模块 -->
+	<action name="notice" class="com.bbs.action.NoticeAction">
+		<result name="success">/manage/notice.jsp</result>
+		<result name="error">/pages/error.jsp</result>
+		<result name="input">/pages/error.jsp</result>
+	</action>
+	
+	<!-- 申请精华帖模块 -->
+	<action name="applybest" class="com.bbs.action.PostAction" method="applyBestPost">
+		<result name="success">/pages/mypost.jsp</result>
+		<result name="error">/pages/error.jsp</result>
+		<result name="input">/pages/error.jsp</result>
+	</action>
+	<action name="replyapply" class="com.bbs.action.PostAction" method="replyapply">
+		<result name="success">/manage/bestpost.jsp</result>
+		<result name="error">/pages/error.jsp</result>
+		<result name="input">/pages/error.jsp</result>
+	</action>
+	<action name="searchuser" class="com.bbs.action.LimitUserAction">
+		<result name="success">/manage/limit.jsp</result>
+		<result name="error">/pages/error.jsp</result>
+		<result name="input">/pages/error.jsp</result>
+	</action>
+	<action name="limit" class="com.bbs.action.LimitUserAction" method="limit">
+		<result name="success">/manage/limit.jsp</result>
+	</action>
+	
+	
+	
+</package>
+
+
+
+</struts>    
